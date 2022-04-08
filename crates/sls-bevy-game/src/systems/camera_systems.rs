@@ -47,8 +47,8 @@ pub fn camera_rotate(
       if key.pressed(KeyCode::LAlt) || mouse_button.pressed(MouseButton::Middle) {
         if motion.length() >= 0.01 {
           let rotation_delta = motion * time.delta_seconds() * camera_state.movement_sensitivity;
-          camera_state.yaw += rotation_delta.x;
-          camera_state.pitch = f32::clamp(camera_state.pitch + rotation_delta.y, -89.0, 89.0);
+          camera_state.yaw -= rotation_delta.x;
+          camera_state.pitch = f32::clamp(camera_state.pitch - rotation_delta.y, -89.0, 89.0);
         }
 
       }
@@ -67,7 +67,7 @@ pub fn update_camera_rotation(mut query: Query<(&FpsCameraState, &mut Transform)
       let rotation = Quat::from_euler(EulerRot::YXZ,  yaw_r, pitch_r, 0.0);
       *transform = transform.with_rotation(rotation);
     }
-    Err(e) => {
+    Err(_e) => {
       // log::warn!("can't select valid main camera {:?}", e)
     }
   }

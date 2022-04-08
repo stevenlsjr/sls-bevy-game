@@ -14,11 +14,11 @@ pub fn setup_3d_scene(
   mut meshes: ResMut<Assets<Mesh>>,
   mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-  let gltf_scene = assets.load("Avocado.glb#Scene0");
+  let gltf_scene = assets.load("BoomBox.glb#Scene0");
   commands
     .spawn_bundle((
-      Transform::from_xyz(0.0, 0.0, 0.0).with_scale(
-        Vec3::ONE * 10.0),
+      Transform::from_xyz(0.0, 0.5, 0.0).with_scale(
+        Vec3::ONE * 20.0),
       GlobalTransform::default(),
       Name::new("My GLTF scene"),
     ))
@@ -26,11 +26,11 @@ pub fn setup_3d_scene(
       parent.spawn_scene(gltf_scene);
     });
   // plane
-  // commands.spawn_bundle(PbrBundle {
-  //   mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
-  //   material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-  //   ..default()
-  // });
+  commands.spawn_bundle(PbrBundle {
+    mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
+    material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+    ..default()
+  });
   // // cube
   // commands.spawn_bundle(PbrBundle {
   //   mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
@@ -45,18 +45,20 @@ pub fn setup_3d_scene(
       shadows_enabled: true,
       ..default()
     },
-    transform: Transform::from_xyz(0.0, 0.0, 1.0),
+    transform: Transform::from_xyz(0.0, 5.0, 3.0),
     ..default()
   });
   // camera
-  let fps_camera = FpsCameraState {
-    yaw: 45.0,
+  let transform = Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y);
+  let mut fps_camera = FpsCameraState {
+    yaw: 0.0,
     pitch: -10.0,
     ..default()
   };
+  fps_camera.set_from_rotation(&transform.rotation);
   commands
     .spawn_bundle(PerspectiveCameraBundle {
-      transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
+      transform,
       ..default()
     })
     .insert_bundle(FpsCameraBundle { fps_camera })
