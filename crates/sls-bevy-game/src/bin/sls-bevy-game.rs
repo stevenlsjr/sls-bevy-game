@@ -13,7 +13,7 @@ fn main() {
     })
     .insert_resource(Msaa { samples: 4 })
     .add_plugins(DefaultPlugins)
-    .add_plugin(sls_bevy_game::infinite_scroll_game::InfiniteScrollGamePlugin::default())
-    .add_plugin(WorldInspectorPlugin::new());
+    .add_plugin(WorldInspectorPlugin::new())
+    .add_plugin(sls_bevy_game::infinite_scroll_game::InfiniteScrollGamePlugin::default());
   app.run();
 }
